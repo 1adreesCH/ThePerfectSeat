@@ -42,6 +42,8 @@ public class PlayerController : MonoBehaviour
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
                 transform.position = target.position + Vector3.up;
                 seated = true;
+
+                target.tag = "Untagged"; //removes tag from the chair the player is currently sitting on. 
             }
         }
         if (Input.GetKeyUp(seat))
@@ -50,6 +52,8 @@ public class PlayerController : MonoBehaviour
             {
                 seated = false;
                 transform.position = prevPos;
+                
+                target.tag = "Seat"; //adds tag to the chair the player is currently sitting on.
             }
 
         }
