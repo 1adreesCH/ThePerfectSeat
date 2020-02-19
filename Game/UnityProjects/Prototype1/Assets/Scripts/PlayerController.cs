@@ -6,12 +6,14 @@ public class PlayerController : MonoBehaviour
 {
     public Transform target;
     public float speed;
+    public float sprintSpeed;
     public float minDistance;
     bool seated = false;
     Vector3 prevPos;
     Vector3 temp;
     public string[] axis = new string[2];
     public KeyCode seat;
+    public KeyCode sprint;
 
     // Start is called before the first frame update
     void Start()
@@ -72,6 +74,17 @@ public class PlayerController : MonoBehaviour
         //        seated = true;
         //    }
         //}
+
+        if (Input.GetKeyDown(sprint))
+        {
+            speed = sprintSpeed;
+
+        }
+
+        if (Input.GetKeyUp(sprint))
+        {
+            speed = 600f;  //At this point I was tired and done with unity's shite, so it's hard coded, sorry guys
+        }
     }
     
     void OnTriggerEnter(Collider col)
