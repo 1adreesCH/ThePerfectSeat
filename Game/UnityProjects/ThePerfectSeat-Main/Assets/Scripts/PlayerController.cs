@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -14,11 +15,15 @@ public class PlayerController : MonoBehaviour
     public string[] axis = new string[2];
     public KeyCode seat;
     public KeyCode sprint;
+    public GameObject scoreText;
+    int score;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         temp = GetComponent<Rigidbody>().velocity;
+        score = 0;
     }
 
     // Update is called once per frame
@@ -30,7 +35,14 @@ public class PlayerController : MonoBehaviour
         temp.z = Input.GetAxis(axis[1]);
         temp.y = 0;
         transform.forward = temp;
-
+        
+        scoreText.GetComponent<Text>().text = "Score:"+score;
+               
+        if(seated==true)
+        {
+            score ++;
+        }
+       
         if (!seated)
         {
             temp = temp.normalized * speed * Time.deltaTime;
@@ -46,6 +58,8 @@ public class PlayerController : MonoBehaviour
                 seated = true;
 
                 target.tag = "Untagged"; //removes tag from the chair the player is currently sitting on. 
+
+
             }
         }
         if (Input.GetKeyUp(seat))
