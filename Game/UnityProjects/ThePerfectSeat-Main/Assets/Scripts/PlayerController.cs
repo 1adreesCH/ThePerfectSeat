@@ -16,14 +16,24 @@ public class PlayerController : MonoBehaviour
     public KeyCode seat;
     public KeyCode sprint;
     public GameObject scoreText;
-    int score;
-    
+    private int score;
+    public int scoreWin = 100;
+    public float timeScore = 1f;
+    private float timeTemp;
+    public GameObject winText;
+    //private float fixedDeltaTime;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
         temp = GetComponent<Rigidbody>().velocity;
         score = 0;
+        timeTemp = timeScore;
+        winText.SetActive(false);
+        //this.fixedDeltaTime = Time.fixedDeltaTime;
+        Time.timeScale = 1f;
     }
 
     // Update is called once per frame
@@ -37,10 +47,18 @@ public class PlayerController : MonoBehaviour
         transform.forward = temp;
         
         scoreText.GetComponent<Text>().text = "Score:"+score;
-               
-        if(seated==true)
+        timeTemp -= Time.deltaTime;
+
+        if (score>=scoreWin)
         {
-            score ++;
+            winText.SetActive(true);// turns on win text
+            Time.timeScale = 0f;// pauses the game
+        }
+               
+        if(seated==true && timeTemp<=0)
+        {
+            score ++;// increases score
+            timeTemp = timeScore;// controls score increase
         }
        
         if (!seated)
@@ -48,7 +66,7 @@ public class PlayerController : MonoBehaviour
             temp = temp.normalized * speed * Time.deltaTime;
             GetComponent<Rigidbody>().velocity = temp;
         }
-       if (Input.GetKeyDown(seat))
+       if (Input.GetKeyDown(seat) && Time.timeScale > 0f)
         {
             if ((transform.position - target.position).magnitude < minDistance)
             {
@@ -99,6 +117,8 @@ public class PlayerController : MonoBehaviour
         {
             speed = 600f;  //At this point I was tired and done with unity's shite, so it's hard coded, sorry guys
         }
+
+        //Time.fixedDeltaTime = this.fixedDeltaTime * Time.timeScale;
     }
     
     void OnTriggerEnter(Collider col)
