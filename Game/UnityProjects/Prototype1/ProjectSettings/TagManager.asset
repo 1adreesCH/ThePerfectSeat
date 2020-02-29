@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Seat
   - Personal Space
+  - Waypoint
   layers:
   - Default
   - TransparentFX

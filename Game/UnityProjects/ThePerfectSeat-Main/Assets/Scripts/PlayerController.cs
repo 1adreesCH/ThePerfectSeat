@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public float sprintSpeed;
     public float minDistance;
-    bool seated = false;
+    public bool seated = false;
     Vector3 prevPos;
     Vector3 temp;
     public string[] axis = new string[2];
@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
         //this.fixedDeltaTime = Time.fixedDeltaTime;
         Time.timeScale = 1f;
     }
+    
 
     // Update is called once per frame
     void Update()
