@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8894,7 +8894,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f7a7bc8606ab354ca2f34b681e3aa54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0
+  moveSpeed: 100
 --- !u!54 &1282286922
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -10458,6 +10458,7 @@ GameObject:
   - component: {fileID: 1639748850}
   - component: {fileID: 1639748849}
   - component: {fileID: 1639748848}
+  - component: {fileID: 1639748851}
   m_Layer: 0
   m_Name: PersonalSpace
   m_TagString: Personal Space
@@ -10487,7 +10488,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1639748846}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
@@ -10539,6 +10540,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1639748846}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1639748851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639748846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cd6b995e52f77b4399c8ff874d729eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1669848366
 GameObject:
   m_ObjectHideFlags: 0
@@ -13462,7 +13475,7 @@ PrefabInstance:
     - target: {fileID: 2485176570223677633, guid: 06de33020145c1242b3ae4c8e4192e27,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 17.3
+      value: 14.42
       objectReference: {fileID: 0}
     - target: {fileID: 2485176570223677633, guid: 06de33020145c1242b3ae4c8e4192e27,
         type: 3}
