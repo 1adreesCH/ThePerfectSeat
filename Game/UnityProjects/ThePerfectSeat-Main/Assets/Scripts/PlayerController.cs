@@ -15,12 +15,16 @@ public class PlayerController : MonoBehaviour
     public string[] axis = new string[2];
     public KeyCode seat;
     public KeyCode sprint;
-    public GameObject scoreText;
+    //public GameObject scoreText;
     private int score;
-    public int scoreWin = 100;
+    public float scoreWin;
     public float timeScore = 1f;
     private float timeTemp;
     public GameObject winText;
+    Vector3 scale;
+    public GameObject scoreBar;
+    public float scoreBarSize;
+    private float scoreTemp;
     //private float fixedDeltaTime;
 
 
@@ -34,12 +38,14 @@ public class PlayerController : MonoBehaviour
         winText.SetActive(false);
         //this.fixedDeltaTime = Time.fixedDeltaTime;
         Time.timeScale = 1f;
+        scoreTemp = scoreBarSize / scoreWin;
     }
     
 
     // Update is called once per frame
     void Update()
     {
+        scale = scoreBar.transform.localScale;
 
         //temp = GetComponent<Rigidbody>().velocity;
         temp.x = Input.GetAxis(axis[0]);
@@ -47,7 +53,7 @@ public class PlayerController : MonoBehaviour
         temp.y = 0;
         transform.forward = temp;
         
-        scoreText.GetComponent<Text>().text = "Score:"+score;
+        //scoreText.GetComponent<Text>().text = "Score:"+score;
         timeTemp -= Time.deltaTime;
 
         if (score>=scoreWin)
@@ -60,6 +66,9 @@ public class PlayerController : MonoBehaviour
         {
             score ++;// increases score
             timeTemp = timeScore;// controls score increase
+            scale.x += scoreTemp;
+            scoreBar.transform.localScale = scale;
+
         }
        
         if (!seated)
