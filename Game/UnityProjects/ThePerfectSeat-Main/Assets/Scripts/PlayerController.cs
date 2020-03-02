@@ -68,12 +68,12 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            temp = temp.normalized * speed * Time.deltaTime;
             GetComponent<Rigidbody>().velocity = temp;
             temp.x = Input.GetAxis(axis[0]);
             temp.z = Input.GetAxis(axis[1]);
             temp.y = 0;
             transform.forward = temp;
+            temp = temp.normalized * speed * Time.deltaTime;
         }
 
        if (Input.GetKeyDown(seat))
@@ -86,9 +86,6 @@ public class PlayerController : MonoBehaviour
                 seated = true;
 
                 target.gameObject.GetComponent<Seat>().SetOccupied(true);
-                //target.tag = "Untagged"; //removes tag from the chair the player is currently sitting on. 
-
-
             }
         }
         if (Input.GetKeyUp(seat))
@@ -101,36 +98,7 @@ public class PlayerController : MonoBehaviour
 
                 timeTemp = timeScore;
             }
-
         }
-        //if (Input.GetKeyDown(seat))
-        //{
-        //    if (seated)
-        //    {
-        //        transform.position = prevPos;
-        //        seated = false;
-        //    }
-        //    else if((transform.position - target.position).magnitude < minDistance)
-        //    {
-        //        prevPos = transform.position;
-        //        GetComponent<Rigidbody>().velocity = Vector3.zero;
-        //        transform.position = target.position + Vector3.up;
-        //        seated = true;
-        //    }
-        //}
-
-        if (Input.GetKeyDown(sprint))
-        {
-            speed = sprintSpeed;
-
-        }
-
-        if (Input.GetKeyUp(sprint))
-        {
-            speed = 600f;  //At this point I was tired and done with unity's shite, so it's hard coded, sorry guys
-        }
-
-        //Time.fixedDeltaTime = this.fixedDeltaTime * Time.timeScale;
     }
     
     void OnTriggerEnter(Collider col)
@@ -155,7 +123,10 @@ public class PlayerController : MonoBehaviour
     }
     void OnTriggerExit(Collider col)
     {
-        target.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
+        if (!col.gameObject.GetComponent<Seat>().GetOccupied())
+        {
+            target.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
+        }
     }
 
 }
