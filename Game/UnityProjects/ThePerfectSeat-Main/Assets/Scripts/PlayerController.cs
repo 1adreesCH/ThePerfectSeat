@@ -37,55 +37,56 @@ public class PlayerController : MonoBehaviour
         timeTemp = timeScore;
         winText.SetActive(false);
         //this.fixedDeltaTime = Time.fixedDeltaTime;
-        Time.timeScale = 1f;
         scoreTemp = scoreBarSize / scoreWin;
+        scale = scoreBar.transform.localScale;
     }
     
 
     // Update is called once per frame
     void Update()
     {
-        scale = scoreBar.transform.localScale;
-
-        //temp = GetComponent<Rigidbody>().velocity;
-        temp.x = Input.GetAxis(axis[0]);
-        temp.z = Input.GetAxis(axis[1]);
-        temp.y = 0;
-        transform.forward = temp;
-        
-        //scoreText.GetComponent<Text>().text = "Score:"+score;
-        timeTemp -= Time.deltaTime;
-
         if (score>=scoreWin)
         {
             winText.SetActive(true);// turns on win text
             Time.timeScale = 0f;// pauses the game
         }
-               
-        if(seated==true && timeTemp<=0)
-        {
-            score ++;// increases score
-            timeTemp = timeScore;// controls score increase
-            scale.x += scoreTemp;
-            scoreBar.transform.localScale = scale;
 
+        if (seated)
+        {
+            scale = scoreBar.transform.localScale;
+            if (timeTemp <= 0)
+            {
+                score++;// increases score
+                timeTemp = timeScore;// controls score increase
+                scale.x += scoreTemp;
+                scoreBar.transform.localScale = scale;
+            }
+            else
+            {
+                timeTemp -= Time.deltaTime;
+            }
         }
-       
-        if (!seated)
+        else
         {
             temp = temp.normalized * speed * Time.deltaTime;
             GetComponent<Rigidbody>().velocity = temp;
+            temp.x = Input.GetAxis(axis[0]);
+            temp.z = Input.GetAxis(axis[1]);
+            temp.y = 0;
+            transform.forward = temp;
         }
-       if (Input.GetKeyDown(seat) && Time.timeScale > 0f)
+
+       if (Input.GetKeyDown(seat))
         {
-            if ((transform.position - target.position).magnitude < minDistance)
+            if ((transform.position - target.position).magnitude < minDistance && !target.GetComponent<Seat>().GetOccupied())
             {
                 prevPos = transform.position;
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
                 transform.position = target.position + Vector3.up;
                 seated = true;
 
-                target.tag = "Untagged"; //removes tag from the chair the player is currently sitting on. 
+                target.gameObject.GetComponent<Seat>().SetOccupied(true);
+                //target.tag = "Untagged"; //removes tag from the chair the player is currently sitting on. 
 
 
             }
@@ -96,8 +97,9 @@ public class PlayerController : MonoBehaviour
             {
                 seated = false;
                 transform.position = prevPos;
-                
-                target.tag = "Seat"; //adds tag to the chair the player is currently sitting on.
+                target.gameObject.GetComponent<Seat>().SetOccupied(false);
+
+                timeTemp = timeScore;
             }
 
         }
@@ -135,13 +137,16 @@ public class PlayerController : MonoBehaviour
     {
         if(col.tag == "Seat")
         {
-            if (target != null)
+            if (!col.gameObject.GetComponent<Seat>().GetOccupied())
             {
-                target.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
+                if (target != null)
+                {
+                    target.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
+                }
+                target = col.transform;
+                col.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
             }
-            print(col.name);
-            target = col.transform;
-            col.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
+
         }
     }
     void onTriggerStay()
