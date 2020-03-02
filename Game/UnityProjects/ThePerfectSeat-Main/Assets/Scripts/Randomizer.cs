@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Randomizer : MonoBehaviour
 {
-    public Renderer[] cubes;
+    List<Renderer> cubes;
     Renderer selected;
     public float timer;
     // Start is called before the first frame update
     void Start()
     {
+        cubes = new List<Renderer>();
+        cubes.AddRange(GetComponentsInChildren<Renderer>());
         timer = Random.Range(0, 7);
     }
 
@@ -30,7 +32,7 @@ public class Randomizer : MonoBehaviour
         {
             selected.material.SetColor("_Color", Color.white);
         }
-        selected = cubes[Random.Range(0, cubes.Length)];
+        selected = cubes[Random.Range(0, cubes.Count)];
         selected.material.SetColor("_Color", Color.black);
     }
 }

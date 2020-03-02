@@ -6,9 +6,11 @@ public class AiMove : MonoBehaviour
 {
     //[SerializeField]
     //Vector3 bathroom;
-    Vector3 initialPos;
     [SerializeField]
     public float moveSpeed;
+    [SerializeField]
+    float waitTime;
+
     int steps;
     bool bathroom;
 
@@ -30,53 +32,68 @@ public class AiMove : MonoBehaviour
     {
         if (bathroom)
         {
-            if (steps < 3)
+            if (steps < 7)
             {
-                switch (steps)
+                if (waitTime <= 0)
                 {
-                    case 0:
-                        target = initialPos + (Vector3.forward);
-                        break;
+                    if (Mathf.Abs((tr.position - target).magnitude) >= 0.1 && target != Vector3.zero)
+                    {
+                        tr.position += (target - tr.position).normalized * moveSpeed * Time.deltaTime;
+                    }
+                    else
+                    {
+                        switch (steps)
+                        {
+                            case 0:
+                                target = tr.position + (Vector3.forward);
+                                break;
 
-                    case 1:
-                        if (initialPos.x > 15)
-                        {
-                            target = new Vector3(21, initialPos.y, initialPos.z);
-                        }
-                        else if (initialPos.x > 11)
-                        {
-                            target = new Vector3(8.7f, initialPos.y, initialPos.z);
-                        }
-                        else if (initialPos.x > -1)
-                        {
-                            target = new Vector3(6, initialPos.y, initialPos.z);
-                        }
-                        else
-                        {
-                            target = new Vector3(-5.5f, initialPos.y, initialPos.z);
-                        }
-                        break;
+                            case 1:
+                                if (tr.position.x > 15)
+                                {
+                                    target = new Vector3(21, tr.position.y, tr.position.z);
+                                }
+                                else if (tr.position.x > 11)
+                                {
+                                    target = new Vector3(8.7f, tr.position.y, tr.position.z);
+                                }
+                                else if (tr.position.x > -1)
+                                {
+                                    target = new Vector3(6, tr.position.y, tr.position.z );
+                                }
+                                else
+                                {
+                                    target = new Vector3(-5.5f, tr.position.y, tr.position.z);
+                                }
+                                currentSeat.SetOccupied(false);
+                                break;
 
-                    case 2:
-                        target = new Vector3(initialPos.x, initialPos.y, -20);
-                        break;
-
-                    default:
-                        target = Vector3.zero;
-                        break;
-                }
-                if (Mathf.Abs((tr.position - target).magnitude) >= 0.1 && target != Vector3.zero)
-                {
-                    tr.position += (target - tr.position).normalized * moveSpeed * Time.deltaTime;
+                            case 2:
+                                target = new Vector3(tr.position.x, tr.position.y, -20);
+                                break;
+                            case 3:
+                                waitTime = Random.Range(4, waitTime);
+                                target = new Vector3(tr.position.x, tr.position.y, currentSeat.transform.position.z + 1);
+                                break;
+                            case 4:
+                                target = currentSeat.gameObject.transform.position + (Vector3.forward);
+                                target.y = tr.position.y;
+                                break;
+                            case 5:
+                                target = currentSeat.gameObject.transform.position;
+                                target.y = tr.position.y;
+                                currentSeat.SetOccupied(true);
+                                break;
+                            default:
+                                target = Vector3.zero;
+                                break;
+                        }
+                        steps++;
+                    }
                 }
                 else
                 {
-                    initialPos = tr.position;
-                    steps++;
-                    if(steps == 1)
-                    {
-                        currentSeat.SetOccupied(false);
-                    }
+                    waitTime -= Time.deltaTime;
                 }
             }
             else
@@ -90,7 +107,6 @@ public class AiMove : MonoBehaviour
     public void Bathroom()
     {
         bathroom = true;
-        initialPos = tr.position;
         steps = 0;
     }
 
@@ -107,5 +123,10 @@ public class AiMove : MonoBehaviour
     public Seat GetCurrentSeat()
     {
         return currentSeat;
+    }
+
+    public bool IsGoingToTheB()
+    {
+        return bathroom;
     }
 }

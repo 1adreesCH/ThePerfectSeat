@@ -90,7 +90,7 @@ BoxCollider:
   m_GameObject: {fileID: 2485176570223677637}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.9671525, y: 0.99678445, z: 1.1123129}
   m_Center: {x: -0.007067408, y: 0.009537545, z: 0.026054809}
@@ -107,3 +107,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
+  waitTime: 10

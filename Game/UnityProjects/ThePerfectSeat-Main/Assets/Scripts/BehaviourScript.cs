@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,16 +6,14 @@ public class BehaviourScript : MonoBehaviour
 {
     List<Seat> seats;
     List<AiMove> npcs;
+    List<AiMove> toTheB;
     //int[,] seatMap;
     [SerializeField]
     int rows;
     [SerializeField]
     int columns;
     float timePassed = 0;
-    float timer = 1;
-    int angerCounter;
-    int i;
-    int x = 0;
+    float timer = 2;
     GameObject temp;
     bool booltemp = false;
     //public GameObject player2;
@@ -27,9 +24,10 @@ public class BehaviourScript : MonoBehaviour
     {
         seats = new List<Seat>();
         npcs = new List<AiMove>();
+        toTheB = new List<AiMove>();
         seats.AddRange(GetComponentsInChildren<Seat>());
 
-        int rand = UnityEngine.Random.Range(0 , seats.Count);
+        int rand = Random.Range(0 , seats.Count);
 
         for (int i = 0; i < rows; i++)
         {
@@ -40,7 +38,7 @@ public class BehaviourScript : MonoBehaviour
                     temp = Instantiate(Resources.Load("AI")) as GameObject;
                     temp.transform.SetParent(GetComponent<Transform>());
                     Vector3 pos = seats[(i * columns) + j].transform.position;
-                    pos.y += 1.5f;
+                    pos.y += 1f;
                     temp.transform.position = pos;
                     seats[(i * columns) + j].SetOccupied(true);
                     temp.GetComponent<AiMove>().SetCurrentSeat(seats[(i*columns)+j]);
@@ -48,7 +46,7 @@ public class BehaviourScript : MonoBehaviour
                 }
                 else
                 {
-                    seats[(i * columns) + j].SetOccupied(false);
+                    seats[(i*columns)+j].SetOccupied(false);
                 }
             }
         }
@@ -58,14 +56,33 @@ public class BehaviourScript : MonoBehaviour
     void Update()
     {
 
-        if (!booltemp)
+        if (timer <= 0)
         {
-            for (int i =0; i < 10; i++)
+            //timer = Random.Range(15, 25);
+            timer = Random.Range(0, 2);  //JUST FOR TESTING
+            if(toTheB.Count < 3)
             {
-                int rand = UnityEngine.Random.Range(0, npcs.Count);
-                npcs[rand].Bathroom();
+                timer = Random.Range(0, 3);
+                int rand = Random.Range(0, npcs.Count);
+                if (!npcs[rand].IsGoingToTheB())
+                {
+                    timer = 1;
+                    npcs[rand].Bathroom();
+                    toTheB.Add(npcs[rand]);
+                }
             }
-            booltemp = true;
+        }
+        else
+        {
+            timer -= Time.deltaTime;
+            foreach(AiMove i in toTheB)
+            {
+                if (!i.IsGoingToTheB())
+                {
+                    toTheB.Remove(i);
+                    break;
+                }
+            }
         }
 
         //if (timer > 0)
