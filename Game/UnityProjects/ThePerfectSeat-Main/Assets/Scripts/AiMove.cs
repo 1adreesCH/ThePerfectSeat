@@ -58,7 +58,7 @@ public class AiMove : MonoBehaviour
                         break;
 
                     case 2:
-                        target = new Vector3(initialPos.x, initialPos.y, -10);
+                        target = new Vector3(initialPos.x, initialPos.y, -20);
                         break;
 
                     default:
@@ -93,6 +93,12 @@ public class AiMove : MonoBehaviour
         initialPos = tr.position;
         steps = 0;
     }
+
+    public void Phone()
+    {
+        
+    }
+
     public void SetCurrentSeat(Seat s)
     {
         currentSeat = s;
