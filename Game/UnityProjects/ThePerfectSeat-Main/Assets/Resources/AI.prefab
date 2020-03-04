@@ -108,3 +108,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   waitTime: 10
+  disturbanceRadius: 10

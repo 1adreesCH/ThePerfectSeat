@@ -15,7 +15,7 @@ public class BehaviourScript : MonoBehaviour
     float timePassed = 0;
     float timer = 2;
     GameObject temp;
-    bool booltemp = false;
+    bool booltemp = true;
     //public GameObject player2;
     //public GameObject player1;
 
@@ -55,6 +55,11 @@ public class BehaviourScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (booltemp)
+        {
+            npcs[18].startPhoneCall();
+            booltemp = false;
+        }
 
         if (timer <= 0)
         {
@@ -67,7 +72,7 @@ public class BehaviourScript : MonoBehaviour
                 if (!npcs[rand].IsGoingToTheB())
                 {
                     timer = 1;
-                    npcs[rand].Bathroom();
+                    npcs[rand].SendToBathroom();
                     toTheB.Add(npcs[rand]);
                 }
             }

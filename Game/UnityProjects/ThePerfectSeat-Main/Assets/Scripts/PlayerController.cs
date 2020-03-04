@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
     public float scoreBarSize;
     private float scoreTemp;
     //private float fixedDeltaTime;
+    [SerializeField]
+    private bool disturbed = false;
 
 
 
@@ -54,7 +56,7 @@ public class PlayerController : MonoBehaviour
         if (seated)
         {
             scale = scoreBar.transform.localScale;
-            if (timeTemp <= 0)
+            if (timeTemp <= 0 && !disturbed)
             {
                 score++;// increases score
                 timeTemp = timeScore;// controls score increase
@@ -127,6 +129,11 @@ public class PlayerController : MonoBehaviour
         {
             target.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.white);
         }
+    }
+
+    public void Disturb(bool v)
+    {
+        disturbed = v;
     }
 
 }
