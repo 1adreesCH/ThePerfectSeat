@@ -52,8 +52,6 @@ public class AiMove : MonoBehaviour
         steps = 0;
     }
 
-
-
     //public void 
 
     public void startPhoneCall()
@@ -81,7 +79,7 @@ public class AiMove : MonoBehaviour
         //
         //start animation phonecall 
         //
-        Collider[] tempcol = Physics.OverlapSphere(transform.position, disturbanceRadius, LayerMask.GetMask("Player"));
+        Collider[] tempcol = Physics.OverlapBox(transform.position, new Vector3(disturbanceRadius,0, disturbanceRadius), Quaternion.identity, LayerMask.GetMask("Player"));
 
         if (tempcol != null) {
             foreach(Collider col in tempcol)
@@ -92,10 +90,8 @@ public class AiMove : MonoBehaviour
                     playerAffected.Disturb(true);
                 }
             }
-
         }
         phoneCall = false;
-
 
     }
     void Bathroom()

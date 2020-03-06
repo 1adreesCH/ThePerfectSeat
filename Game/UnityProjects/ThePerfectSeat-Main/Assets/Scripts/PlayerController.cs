@@ -75,11 +75,11 @@ public class PlayerController : MonoBehaviour
             temp.z = Input.GetAxis(axis[1]);
             temp.y = 0;
             transform.forward = temp;
-            temp = temp.normalized * speed * Time.deltaTime;
+            temp = temp.normalized * speed/10;
         }
 
        if (Input.GetKeyDown(seat))
-        {
+       {
             if ((transform.position - target.position).magnitude < minDistance && !target.GetComponent<Seat>().GetOccupied())
             {
                 prevPos = transform.position;
@@ -89,7 +89,8 @@ public class PlayerController : MonoBehaviour
 
                 target.gameObject.GetComponent<Seat>().SetOccupied(true);
             }
-        }
+       }
+
         if (Input.GetKeyUp(seat))
         {
             if (seated)
