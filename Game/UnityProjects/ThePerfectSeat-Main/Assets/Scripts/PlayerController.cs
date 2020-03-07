@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private bool disturbed = false;
 
+    Animator anim;
+
 
 
     // Start is called before the first frame update
@@ -41,6 +43,8 @@ public class PlayerController : MonoBehaviour
         //this.fixedDeltaTime = Time.fixedDeltaTime;
         scoreTemp = scoreBarSize / scoreWin;
         scale = scoreBar.transform.localScale;
+
+        anim = GetComponentInChildren<Animator>();
     }
     
 
@@ -70,21 +74,23 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            GetComponent<Rigidbody>().velocity = temp;
             temp.x = Input.GetAxis(axis[0]);
             temp.z = Input.GetAxis(axis[1]);
             temp.y = 0;
+            temp = temp.normalized;
             transform.forward = temp;
-            temp = temp.normalized * speed/10;
+            GetComponent<Rigidbody>().velocity = temp * speed * Time.deltaTime;
         }
 
        if (Input.GetKeyDown(seat))
        {
             if ((transform.position - target.position).magnitude < minDistance && !target.GetComponent<Seat>().GetOccupied())
             {
-                prevPos = transform.position;
+                //prevPos = transform.position;
                 GetComponent<Rigidbody>().velocity = Vector3.zero;
-                transform.position = target.position + Vector3.up;
+                transform.position = target.position + Vector3.forward + (Vector3.up * 0.33f);
+                transform.rotation = Quaternion.identity;
+                anim.SetBool("Seated",true);
                 seated = true;
 
                 target.gameObject.GetComponent<Seat>().SetOccupied(true);
@@ -96,8 +102,9 @@ public class PlayerController : MonoBehaviour
             if (seated)
             {
                 seated = false;
-                transform.position = prevPos;
+                //transform.position = prevPos;
                 target.gameObject.GetComponent<Seat>().SetOccupied(false);
+                anim.SetBool("Seated", false);
 
                 timeTemp = timeScore;
             }
