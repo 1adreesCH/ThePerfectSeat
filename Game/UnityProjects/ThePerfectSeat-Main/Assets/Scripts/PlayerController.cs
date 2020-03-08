@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     //private float fixedDeltaTime;
     [SerializeField]
     private bool disturbed = false;
+    private float tempSpeed;
 
     Animator anim;
 
@@ -43,6 +44,8 @@ public class PlayerController : MonoBehaviour
         //this.fixedDeltaTime = Time.fixedDeltaTime;
         scoreTemp = scoreBarSize / scoreWin;
         scale = scoreBar.transform.localScale;
+        Time.timeScale = 1f;// unpauses the game 
+        tempSpeed = speed;
 
         anim = GetComponentInChildren<Animator>();
     }
@@ -66,6 +69,7 @@ public class PlayerController : MonoBehaviour
                 timeTemp = timeScore;// controls score increase
                 scale.x += scoreTemp;
                 scoreBar.transform.localScale = scale;
+                speed = 0;
             }
             else
             {
@@ -74,6 +78,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            speed = tempSpeed;
             temp.x = Input.GetAxis(axis[0]);
             temp.z = Input.GetAxis(axis[1]);
             temp.y = 0;
@@ -94,6 +99,8 @@ public class PlayerController : MonoBehaviour
                 seated = true;
 
                 target.gameObject.GetComponent<Seat>().SetOccupied(true);
+                
+                speed = 0;
             }
        }
 
@@ -107,6 +114,8 @@ public class PlayerController : MonoBehaviour
                 anim.SetBool("Seated", false);
 
                 timeTemp = timeScore;
+
+                speed = tempSpeed;
             }
         }
     }
