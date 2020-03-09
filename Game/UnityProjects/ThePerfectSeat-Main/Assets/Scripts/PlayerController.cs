@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     public KeyCode seat;
     public KeyCode sprint;
     //public GameObject scoreText;
-    private int score;
+    private double score;
     public float scoreWin;
     public float timeScore = 1f;
     private float timeTemp;
@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
         scale = scoreBar.transform.localScale;
         Time.timeScale = 1f;// unpauses the game 
         tempSpeed = speed;
+        disturbed = false;
 
         anim = GetComponentInChildren<Animator>();
     }
@@ -65,12 +66,22 @@ public class PlayerController : MonoBehaviour
             scale = scoreBar.transform.localScale;
             if (timeTemp <= 0 && !disturbed)
             {
-                score++;// increases score
+                score++; // increases score
                 timeTemp = timeScore;// controls score increase
                 scale.x += scoreTemp;
                 scoreBar.transform.localScale = scale;
                 speed = 0;
             }
+
+            else if(timeTemp <= 0 && disturbed)
+            {
+                score+=0.5;// increases score 
+                timeTemp = timeScore;// controls score increase
+                scale.x += scoreTemp/2;
+                scoreBar.transform.localScale = scale;
+                speed = 0;
+            }
+
             else
             {
                 timeTemp -= Time.deltaTime;
