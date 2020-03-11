@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     //public GameObject scoreText;
     private int score;
     public float scoreWin;
-    public float timeScore = 1f;
+    public float timeScore;
     private float timeTemp;
     public GameObject winText;
     Vector3 scale;
@@ -62,14 +62,14 @@ public class PlayerController : MonoBehaviour
 
         if (seated)
         {
-            scale = scoreBar.transform.localScale;
+            
             if (timeTemp <= 0 && !disturbed)
             {
+                scale = scoreBar.transform.localScale;
                 score++;// increases score
                 timeTemp = timeScore;// controls score increase
                 scale.x += scoreTemp;
-                scoreBar.transform.localScale = scale;
-                speed = 0;
+                scoreBar.GetComponent<Transform>().localScale = scale;
             }
             else
             {
@@ -78,11 +78,14 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            speed = tempSpeed;
             temp.x = Input.GetAxis(axis[0]);
             temp.z = Input.GetAxis(axis[1]);
             temp.y = 0;
-            temp = temp.normalized;
+            if (temp.magnitude > 1)
+            {
+                temp = temp.normalized;
+            }
+
             transform.forward = temp;
             GetComponent<Rigidbody>().velocity = temp * speed * Time.deltaTime;
         }
@@ -100,7 +103,6 @@ public class PlayerController : MonoBehaviour
 
                 target.gameObject.GetComponent<Seat>().SetOccupied(true);
                 
-                speed = 0;
             }
        }
 
@@ -115,7 +117,6 @@ public class PlayerController : MonoBehaviour
 
                 timeTemp = timeScore;
 
-                speed = tempSpeed;
             }
         }
     }
@@ -150,7 +151,7 @@ public class PlayerController : MonoBehaviour
 
     public void Disturb(bool v)
     {
-        disturbed = v;
+        //disturbed = v;
     }
 
 }
