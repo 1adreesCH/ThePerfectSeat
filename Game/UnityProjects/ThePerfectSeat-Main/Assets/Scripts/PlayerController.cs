@@ -10,26 +10,26 @@ public class PlayerController : MonoBehaviour
     public float sprintSpeed;
     public float minDistance;
     public bool seated = false;
-    Vector3 prevPos;
-    Vector3 temp;
     public string[] axis = new string[2];
     public KeyCode seat;
     public KeyCode sprint;
-    //public GameObject scoreText;
-    private int score;
     public float scoreWin;
     public float timeScore;
-    private float timeTemp;
     public GameObject winText;
     Vector3 scale;
     public GameObject scoreBar;
     public float scoreBarSize;
+
+    private bool sprinting = false;
     private float scoreTemp;
-    //private float fixedDeltaTime;
     [SerializeField]
     private bool disturbed = false;
     private float tempSpeed;
+    private int score;
+    private float timeTemp;
 
+    Vector3 prevPos;
+    Vector3 temp;
     Animator anim;
 
 
@@ -106,6 +106,8 @@ public class PlayerController : MonoBehaviour
             }
        }
 
+
+
         if (Input.GetKeyUp(seat))
         {
             if (seated)
@@ -117,6 +119,14 @@ public class PlayerController : MonoBehaviour
 
                 timeTemp = timeScore;
 
+            }
+        }
+
+        if (Input.GetKeyUp(sprint))
+        {
+            if (!sprinting)
+            {
+                sprinting = true;
             }
         }
     }
@@ -134,7 +144,6 @@ public class PlayerController : MonoBehaviour
                 target = col.transform;
                 col.gameObject.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
             }
-
         }
     }
     void onTriggerStay()
@@ -153,5 +162,4 @@ public class PlayerController : MonoBehaviour
     {
         //disturbed = v;
     }
-
 }
