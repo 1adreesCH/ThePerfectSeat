@@ -15,18 +15,18 @@ public class RotatingChairs : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for(int i = 0; i < numberOfOptions; i++)
-        {
-            GameObject temp = Instantiate(chairPrefab, GetComponent<Transform>()) as GameObject;
-            Transform tr = temp.GetComponent<Transform>();
-            tr.localPosition = new Vector3(Mathf.Cos((Mathf.PI / numberOfOptions) * i * 2), 0, Mathf.Sin((Mathf.PI / numberOfOptions) * i * 2)) * radius;
-            tr.forward = -tr.localPosition.normalized;
-        }
+        //for(int i = 0; i < numberOfOptions; i++)
+        //{
+        //    GameObject temp = Instantiate(chairPrefab, GetComponent<Transform>()) as GameObject;
+        //    Transform tr = temp.GetComponent<Transform>();
+        //    tr.localPosition = new Vector3(Mathf.Cos((Mathf.PI / numberOfOptions) * i * 2), 0, Mathf.Sin((Mathf.PI / numberOfOptions) * i * 2)) * radius;
+        //    tr.forward = -tr.localPosition.normalized;
+        //}
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        GetComponent<Transform>().Rotate(0,1/smoothing,0);
+        GetComponent<Transform>().Rotate(new Vector3(0,1/smoothing,0));
     }
 }
