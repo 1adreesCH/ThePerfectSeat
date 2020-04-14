@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
     private float tempSpeed;
     private int score;
     private float timeTemp;
+    public float dashDistance = 0.8f;
+    public bool canDash = true;
 
     Vector3 prevPos;
     Vector3 temp;
@@ -129,8 +131,35 @@ public class PlayerController : MonoBehaviour
                 sprinting = true;
             }
         }
+
+        if (Input.GetKeyDown(sprint) && (canDash = true))
+        {
+            canDash = false;
+            Dash();
+
+        }
+
     }
-    
+
+    void Dash()
+    {
+        Vector3 dashPos = transform.forward;
+        float t = 0f;
+
+
+        dashPos.x = transform.forward.x + dashDistance;
+        dashPos.z = transform.forward.z + dashDistance;
+
+        while (t < 1)
+        {
+            t += Time.deltaTime * 2;
+            transform.position = Vector3.Lerp(transform.position, dashPos, t);
+            canDash = true;
+        }
+
+    }
+
+
     void OnTriggerEnter(Collider col)
     {
         if(col.tag == "Seat")
