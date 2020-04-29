@@ -150,12 +150,12 @@ public class PlayerController : MonoBehaviour
         dashPos.x = transform.forward.x + dashDistance;
         dashPos.z = transform.forward.z + dashDistance;
 
-        while (t < 1)
-        {
+      //  while (t < 1)
+       // {
             t += Time.deltaTime * 2;
             transform.position = Vector3.Lerp(transform.position, dashPos, t);
             canDash = true;
-        }
+       // }
 
     }
 
